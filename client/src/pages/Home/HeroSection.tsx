@@ -1,15 +1,13 @@
 import { useEffect, useRef } from 'react'
-import React from 'react'
 import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { gsap } from 'gsap'
 import {
   ShieldCheck, Truck, Star, Trophy, Sparkles,
-  ArrowRight, ArrowUpRight, TrendingUp, Users, Package, Zap,
+  ArrowRight, ArrowUpRight, Users, Package,
 } from 'lucide-react'
 import { GiCricketBat, GiSoccerBall, GiShuttlecock, GiRunningShoe, GiPoloShirt } from 'react-icons/gi'
-
-const IMG_CRICKET = 'https://images.unsplash.com/photo-1540747913346-19212a4b423e?auto=format&fit=crop&w=900&q=85'
+import AnimatedCircle from '@/components/ui/AnimatedCircle'
 
 const MARQUEE_ITEMS = [
   'Cricket World Cup Gear',
@@ -19,6 +17,14 @@ const MARQUEE_ITEMS = [
   '7-Day Easy Returns',
   '50,000+ Happy Athletes',
   '4.9 Star Rated',
+]
+
+const SPORT_CARDS = [
+  { label: 'Cricket', sub: 'Bats · Pads · Helmets', href: '/category/cricket', color: '#FF6B00', Icon: GiCricketBat, img: 'https://images.unsplash.com/photo-1540747913346-19212a4b423e?auto=format&fit=crop&w=400&q=80' },
+  { label: 'Football', sub: 'Boots · Balls · Kits', href: '/category/football', color: '#22C55E', Icon: GiSoccerBall, img: 'https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=400&q=80' },
+  { label: 'Badminton', sub: 'Rackets · Shuttles', href: '/category/badminton', color: '#EAB308', Icon: GiShuttlecock, img: 'https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?auto=format&fit=crop&w=400&q=80' },
+  { label: 'Shoes', sub: 'Sports & Training', href: '/category/shoes', color: '#A855F7', Icon: GiRunningShoe, img: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=400&q=80' },
+  { label: 'Jerseys', sub: 'Club & National', href: '/category/jerseys', color: '#EF4444', Icon: GiPoloShirt, img: 'https://images.unsplash.com/photo-1593341646782-e0b495cff86d?auto=format&fit=crop&w=400&q=80' },
 ]
 
 const STATS = [
@@ -41,25 +47,17 @@ function CategoryPill({ label, sub, href, Icon, color }: typeof CATEGORIES[0]) {
   const y = useMotionValue(0)
   const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [6, -6]), { stiffness: 400, damping: 30 })
   const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-6, 6]), { stiffness: 400, damping: 30 })
-
   return (
     <Link to={href} style={{ perspective: '800px' }}>
       <motion.div
-        onMouseMove={(e) => {
-          const r = e.currentTarget.getBoundingClientRect()
-          x.set((e.clientX - r.left - r.width / 2) / r.width)
-          y.set((e.clientY - r.top - r.height / 2) / r.height)
-        }}
+        onMouseMove={(e) => { const r = e.currentTarget.getBoundingClientRect(); x.set((e.clientX - r.left - r.width / 2) / r.width); y.set((e.clientY - r.top - r.height / 2) / r.height) }}
         onMouseLeave={() => { x.set(0); y.set(0) }}
         style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}
         whileHover={{ scale: 1.03, boxShadow: `0 12px 32px -8px ${color}30` }}
         transition={{ scale: { type: 'spring', stiffness: 500, damping: 30 } }}
         className="group flex items-center gap-3 px-4 py-3.5 rounded-2xl bg-white border border-gray-200/80 hover:border-gray-300 cursor-pointer transition-colors duration-200"
       >
-        <div
-          className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
-          style={{ backgroundColor: `${color}15`, border: `1px solid ${color}25` }}
-        >
+        <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ backgroundColor: `${color}15`, border: `1px solid ${color}25` }}>
           <Icon size={20} style={{ color }} />
         </div>
         <div className="flex-1 min-w-0">
@@ -73,44 +71,38 @@ function CategoryPill({ label, sub, href, Icon, color }: typeof CATEGORIES[0]) {
 }
 
 export default function HeroSection() {
-  const contentRef = useRef<HTMLDivElement>(null)
-  const imageRef = useRef<HTMLDivElement>(null)
-  const [imgErr, setImgErr] = React.useState(false)
+  const headlineRef = useRef<HTMLDivElement>(null)
+  const cardsRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const tl = gsap.timeline({ delay: 0.1 })
-    tl.fromTo(contentRef.current, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' })
-      .fromTo(imageRef.current, { opacity: 0, x: 30, scale: 0.95 }, { opacity: 1, x: 0, scale: 1, duration: 0.9, ease: 'power3.out' }, '-=0.6')
+    tl.fromTo(headlineRef.current, { opacity: 0, y: 36 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' })
+      .fromTo(cardsRef.current, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, '-=0.5')
   }, [])
 
   return (
     <section className="relative min-h-screen bg-white flex flex-col overflow-hidden">
 
-      {/* CSS dot-grid background — no canvas, always visible */}
+      {/* CSS dot-grid bg */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          backgroundImage: 'radial-gradient(circle, #CACACA 1.5px, transparent 1.5px)',
+          backgroundImage: 'radial-gradient(circle, #C8C8C8 1.5px, transparent 1.5px)',
           backgroundSize: '36px 36px',
         }}
       />
-      {/* Radial fade to white at edges */}
       <div
         className="absolute inset-0 pointer-events-none"
-        style={{
-          background: 'radial-gradient(ellipse 80% 80% at 50% 50%, transparent 40%, white 85%)',
-        }}
+        style={{ background: 'radial-gradient(ellipse 90% 90% at 50% 50%, transparent 35%, white 80%)' }}
       />
+      <div className="absolute top-0 right-0 w-[700px] h-[700px] bg-brand-orange/5 rounded-full blur-[140px] -translate-y-1/3 translate-x-1/3 pointer-events-none" />
 
-      {/* Orange glow accent */}
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-brand-orange/6 rounded-full blur-[120px] -translate-y-1/3 translate-x-1/4 pointer-events-none" />
-
-      {/* ── Marquee strip ── */}
+      {/* Marquee strip */}
       <div className="absolute top-20 left-0 right-0 z-[5] border-y border-gray-100 bg-white/80 backdrop-blur-sm overflow-hidden py-3">
         <div className="flex animate-marquee gap-10 whitespace-nowrap">
-          {Array(3).fill(0).flatMap((_, batch) =>
+          {Array(3).fill(0).flatMap((_, b) =>
             MARQUEE_ITEMS.map((item, i) => (
-              <span key={`${batch}-${i}`} className="inline-flex items-center gap-2.5 text-gray-500 font-accent text-xs uppercase tracking-[0.2em]">
+              <span key={`${b}-${i}`} className="inline-flex items-center gap-2.5 text-gray-500 font-accent text-xs uppercase tracking-[0.2em]">
                 <Sparkles className="w-3 h-3 text-brand-orange flex-shrink-0" />
                 {item}
               </span>
@@ -119,7 +111,6 @@ export default function HeroSection() {
         </div>
       </div>
 
-      {/* ── Main content ── */}
       <div className="relative z-[4] max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-44 pb-12 w-full flex-1 flex flex-col">
 
         {/* Live ticker + index */}
@@ -148,187 +139,123 @@ export default function HeroSection() {
           </div>
         </motion.div>
 
-        {/* Two-column layout */}
-        <div className="grid lg:grid-cols-12 gap-10 lg:gap-16 items-center mb-14">
+        {/* ── Editorial headline block ── */}
+        <div ref={headlineRef} className="mb-14" style={{ opacity: 0 }}>
+          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8">
 
-          {/* ── LEFT: Editorial text ── */}
-          <div
-            ref={contentRef}
-            className="lg:col-span-7 flex flex-col"
-            style={{ opacity: 0 }}
-          >
-            {/* Eyebrow */}
-            <div className="inline-flex items-center gap-2 mb-7 self-start px-3 py-1.5 rounded-full border border-brand-orange/25 bg-brand-orange/6">
-              <Zap className="w-3 h-3 text-brand-orange fill-brand-orange" />
-              <span className="text-brand-orange text-[10px] font-accent font-bold uppercase tracking-[0.25em]">
-                India's #1 Sports Store
-              </span>
-            </div>
+            {/* Left: big headline */}
+            <div className="max-w-3xl">
+              <div className="inline-flex items-center gap-2 mb-6 px-3 py-1.5 rounded-full border border-brand-orange/25 bg-brand-orange/6">
+                <span className="w-1.5 h-1.5 rounded-full bg-brand-orange" />
+                <span className="text-brand-orange text-[10px] font-accent font-bold uppercase tracking-[0.25em]">India's #1 Sports Store</span>
+              </div>
 
-            {/* Headline */}
-            <h1 className="font-heading leading-[0.82] tracking-wide uppercase mb-8">
-              <span className="block text-[clamp(72px,11vw,156px)] text-gray-900">GAME</span>
-              <span className="block text-[clamp(72px,11vw,156px)] text-gray-900">
-                ON<span className="text-brand-orange">.</span>
-              </span>
-              <span className="block text-[clamp(40px,6vw,84px)] mt-4 text-gray-400">
-                GEAR UP{' '}
-                <span className="relative inline-block text-brand-orange italic">
-                  NOW
-                  <svg
-                    className="absolute -bottom-1 left-0 w-full"
-                    height="8"
-                    viewBox="0 0 200 8"
-                    fill="none"
-                    preserveAspectRatio="none"
-                  >
-                    <path d="M2 5 Q60 1 100 4 T198 5" stroke="#FF6B00" strokeWidth="3.5" strokeLinecap="round" fill="none" />
-                  </svg>
+              <h1 className="font-heading leading-[0.82] tracking-wide uppercase">
+                <span className="block text-[clamp(64px,10vw,150px)] text-gray-900">PLAY YOUR</span>
+                <span className="block text-[clamp(64px,10vw,150px)]">
+                  BEST{' '}
+                  <AnimatedCircle color="#FF6B00" strokeWidth={4} className="text-brand-orange">
+                    GAME
+                  </AnimatedCircle>
+                  <span className="text-brand-orange">.</span>
                 </span>
-                <span className="text-brand-orange">.</span>
-              </span>
-            </h1>
-
-            <p className="text-gray-500 text-base lg:text-lg font-body leading-relaxed max-w-[480px] mb-9">
-              Premium gear for cricket, football, badminton & beyond. Trusted by
-              <span className="text-gray-900 font-semibold"> 50,000+ athletes </span>
-              across India.
-            </p>
-
-            {/* CTAs */}
-            <div className="flex flex-wrap gap-3 mb-10">
-              <Link
-                to="/category/cricket"
-                className="group inline-flex items-center gap-2.5 px-7 py-4 bg-gray-900 hover:bg-brand-orange text-white font-accent font-semibold text-sm rounded-2xl transition-all duration-300 hover:-translate-y-0.5 shadow-[0_8px_24px_rgba(0,0,0,0.12)] hover:shadow-[0_12px_30px_rgba(255,107,0,0.35)]"
-              >
-                Shop Cricket
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-              </Link>
-              <Link
-                to="/search"
-                className="inline-flex items-center gap-2 px-7 py-4 bg-white border border-gray-200 hover:border-gray-900 text-gray-700 hover:text-gray-900 font-accent font-semibold text-sm rounded-2xl transition-all duration-300 hover:-translate-y-0.5"
-              >
-                All Sports
-              </Link>
+              </h1>
             </div>
 
-            {/* Trust row */}
-            <div className="flex flex-wrap gap-x-6 gap-y-3 pt-6 border-t border-gray-100">
-              {[
-                { Icon: ShieldCheck, text: '100% Genuine' },
-                { Icon: Truck, text: 'Free Delivery ₹999+' },
-                { Icon: Star, text: '4.9 Rated' },
-              ].map(({ Icon, text }) => (
-                <div key={text} className="flex items-center gap-2">
-                  <Icon className="w-4 h-4 text-brand-orange" />
-                  <span className="text-gray-500 text-sm font-accent">{text}</span>
-                </div>
-              ))}
+            {/* Right: subtext + CTAs + trust */}
+            <div className="lg:max-w-xs xl:max-w-sm lg:pb-2">
+              <p className="text-gray-500 text-base font-body leading-relaxed mb-6">
+                Premium gear for cricket, football, badminton & beyond. Trusted by
+                <span className="text-gray-900 font-semibold"> 50,000+ athletes</span> across India.
+              </p>
+              <div className="flex flex-wrap gap-3 mb-6">
+                <Link
+                  to="/category/cricket"
+                  className="group inline-flex items-center gap-2.5 px-6 py-3.5 bg-gray-900 hover:bg-brand-orange text-white font-accent font-semibold text-sm rounded-2xl transition-all duration-300 hover:-translate-y-0.5 shadow-[0_8px_24px_rgba(0,0,0,0.12)] hover:shadow-[0_12px_30px_rgba(255,107,0,0.35)]"
+                >
+                  Shop Cricket
+                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                </Link>
+                <Link
+                  to="/search"
+                  className="inline-flex items-center gap-2 px-6 py-3.5 bg-white border border-gray-200 hover:border-gray-900 text-gray-700 hover:text-gray-900 font-accent font-semibold text-sm rounded-2xl transition-all duration-300 hover:-translate-y-0.5"
+                >
+                  All Sports
+                </Link>
+              </div>
+              <div className="flex flex-wrap gap-x-5 gap-y-2 pt-5 border-t border-gray-100">
+                {[
+                  { Icon: ShieldCheck, text: '100% Genuine' },
+                  { Icon: Truck, text: 'Free ₹999+' },
+                  { Icon: Star, text: '4.9 Rated' },
+                ].map(({ Icon, text }) => (
+                  <div key={text} className="flex items-center gap-1.5">
+                    <Icon className="w-3.5 h-3.5 text-brand-orange" />
+                    <span className="text-gray-500 text-xs font-accent">{text}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
+        </div>
 
-          {/* ── RIGHT: Hero product card ── */}
-          <div
-            ref={imageRef}
-            className="lg:col-span-5 relative"
-            style={{ opacity: 0 }}
-          >
-            <div className="relative">
-
-              {/* Rotated backdrop */}
+        {/* ── Horizontal sport cards row ── */}
+        <div ref={cardsRef} className="mb-12" style={{ opacity: 0 }}>
+          <div className="flex items-center justify-between mb-5">
+            <p className="text-gray-400 text-[11px] font-accent uppercase tracking-[0.2em]">Shop by Sport</p>
+            <Link to="/search" className="text-gray-500 hover:text-brand-orange text-xs font-accent flex items-center gap-1 transition-colors">
+              View all <ArrowRight className="w-3 h-3" />
+            </Link>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+            {SPORT_CARDS.map(({ label, sub, href, color, Icon, img }, i) => (
               <motion.div
-                animate={{ y: [0, -6, 0] }}
-                transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-                className="absolute top-4 right-4 w-full aspect-[4/5] rounded-[2.5rem] bg-gradient-to-br from-brand-orange/12 via-amber-50 to-orange-100/30 border border-brand-orange/12 rotate-[3deg]"
-              />
-
-              {/* Main card */}
-              <motion.div
-                animate={{ y: [-4, 4, -4] }}
-                transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
-                className="relative aspect-[4/5] rounded-[2.5rem] overflow-hidden bg-gray-100 border border-gray-100 shadow-[0_40px_80px_-20px_rgba(0,0,0,0.22)]"
+                key={label}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 + i * 0.08, duration: 0.5, ease: 'easeOut' }}
+                whileHover={{ y: -6 }}
               >
-                {!imgErr ? (
+                <Link
+                  to={href}
+                  className="group block relative overflow-hidden rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300"
+                  style={{ aspectRatio: '3/4' }}
+                >
                   <img
-                    src={IMG_CRICKET}
-                    alt="Cricket gear"
-                    className="w-full h-full object-cover"
-                    loading="eager"
-                    onError={() => setImgErr(true)}
+                    src={img}
+                    alt={label}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
-                    <GiCricketBat size={80} className="text-brand-orange/40" />
-                  </div>
-                )}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
 
-                <div className="absolute top-5 right-5 flex items-center gap-1.5 px-3 py-1.5 bg-brand-orange text-white rounded-full shadow-[0_8px_24px_rgba(255,107,0,0.5)]">
-                  <Sparkles className="w-3 h-3" />
-                  <span className="text-[10px] font-accent font-bold uppercase tracking-widest">New Drop</span>
-                </div>
-                <div className="absolute top-5 left-5 px-3 py-1.5 bg-white/95 backdrop-blur-sm rounded-full text-[10px] font-accent font-bold text-gray-900 uppercase tracking-widest">
-                  Cricket
-                </div>
-                <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between">
-                  <div>
-                    <p className="text-white/60 text-[10px] font-accent uppercase tracking-widest mb-1">Featured</p>
-                    <p className="text-white font-heading text-xl tracking-wider">Pro Cricket Gear</p>
-                  </div>
-                  <Link
-                    to="/category/cricket"
-                    className="w-12 h-12 rounded-2xl bg-brand-orange flex items-center justify-center text-white shadow-[0_8px_24px_rgba(255,107,0,0.5)] hover:bg-white hover:text-brand-orange transition-all duration-300 group/btn"
+                  {/* Top icon */}
+                  <div
+                    className="absolute top-3 left-3 w-8 h-8 rounded-xl flex items-center justify-center"
+                    style={{ backgroundColor: `${color}CC` }}
                   >
-                    <ArrowUpRight className="w-5 h-5 group-hover/btn:rotate-45 transition-transform" />
-                  </Link>
-                </div>
-              </motion.div>
-
-              {/* Floating chip — left */}
-              <motion.div
-                initial={{ opacity: 0, x: -20, y: 10 }}
-                animate={{ opacity: 1, x: 0, y: 0 }}
-                transition={{ delay: 1, duration: 0.6 }}
-                whileHover={{ y: -4 }}
-                className="absolute -left-6 top-12 bg-white rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.12)] border border-gray-100 p-4 min-w-[130px]"
-              >
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="w-8 h-8 rounded-xl bg-brand-orange/10 border border-brand-orange/20 flex items-center justify-center">
-                    <TrendingUp className="w-4 h-4 text-brand-orange" />
+                    <Icon size={16} color="white" />
                   </div>
-                  <span className="text-gray-400 text-[10px] font-accent uppercase tracking-widest">Sales</span>
-                </div>
-                <p className="font-heading text-3xl text-gray-900 tracking-wider leading-none">+248%</p>
-                <p className="text-gray-400 text-[10px] font-accent mt-1.5">This week</p>
-              </motion.div>
 
-              {/* Floating chip — right */}
-              <motion.div
-                initial={{ opacity: 0, x: 20, y: -10 }}
-                animate={{ opacity: 1, x: 0, y: 0 }}
-                transition={{ delay: 1.2, duration: 0.6 }}
-                whileHover={{ y: -4 }}
-                className="absolute -right-4 bottom-12 bg-gray-900 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.22)] p-4 min-w-[120px]"
-              >
-                <div className="flex gap-0.5 mb-2">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-3 h-3 fill-amber-400 text-amber-400" />
-                  ))}
-                </div>
-                <p className="font-heading text-3xl text-white tracking-wider leading-none">4.9</p>
-                <p className="text-white/40 text-[10px] font-accent mt-1.5">12K+ Reviews</p>
+                  {/* Bottom info */}
+                  <div className="absolute bottom-0 left-0 right-0 p-3">
+                    <p className="text-white font-heading text-base tracking-wider leading-none">{label}</p>
+                    <p className="text-white/60 text-[10px] font-accent mt-0.5">{sub}</p>
+                    <div className="flex items-center gap-1 mt-2 text-white/80 text-[10px] font-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      Shop now <ArrowUpRight className="w-3 h-3" />
+                    </div>
+                  </div>
+                </Link>
               </motion.div>
-
-            </div>
+            ))}
           </div>
         </div>
 
         {/* ── Stats bar ── */}
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7, duration: 0.6 }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-px bg-gray-100 rounded-3xl overflow-hidden border border-gray-100 mb-12"
+          transition={{ delay: 0.85, duration: 0.6 }}
+          className="grid grid-cols-2 md:grid-cols-4 gap-px bg-gray-100 rounded-3xl overflow-hidden border border-gray-100"
         >
           {STATS.map(({ value, label, Icon }) => (
             <div
@@ -340,32 +267,6 @@ export default function HeroSection() {
               <p className="text-gray-400 text-[10px] md:text-xs font-accent uppercase tracking-widest mt-2">{label}</p>
             </div>
           ))}
-        </motion.div>
-
-        {/* ── Category pills ── */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.9 }}
-        >
-          <div className="flex items-center justify-between mb-5">
-            <p className="text-gray-400 text-[11px] font-accent uppercase tracking-[0.2em]">Popular Categories</p>
-            <Link to="/search" className="text-gray-500 hover:text-brand-orange text-xs font-accent flex items-center gap-1 transition-colors">
-              View all <ArrowRight className="w-3 h-3" />
-            </Link>
-          </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-            {CATEGORIES.map((cat, i) => (
-              <motion.div
-                key={cat.label}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1 + i * 0.07, duration: 0.4, ease: 'easeOut' }}
-              >
-                <CategoryPill {...cat} />
-              </motion.div>
-            ))}
-          </div>
         </motion.div>
 
       </div>

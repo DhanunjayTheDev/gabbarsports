@@ -36,7 +36,7 @@ export default function SearchPage() {
                 <h1 className="font-heading text-4xl text-gray-900 tracking-wider">SEARCH RESULTS</h1>
               </div>
               <p className="text-gray-400 font-accent">
-                "{query}" — {products.length} result{products.length !== 1 ? 's' : ''}
+                "{query}" {products.length} result{products.length !== 1 ? 's' : ''}
               </p>
             </>
           ) : (
@@ -66,7 +66,7 @@ export default function SearchPage() {
               {query ? 'NO RESULTS' : 'NO PRODUCTS YET'}
             </p>
             <p className="text-gray-400 font-accent mt-2">
-              {query ? 'Try a different search term' : 'Check back soon — we\'re adding products daily'}
+              {query ? 'Try a different search term' : 'Check back soon we\'re adding products daily'}
             </p>
           </div>
         ) : (

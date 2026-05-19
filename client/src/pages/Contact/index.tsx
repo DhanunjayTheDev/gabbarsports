@@ -4,6 +4,7 @@ import {
   Mail, Phone, MapPin, Send, Instagram, Facebook, Twitter, MessageCircle,
   Clock, Navigation, ExternalLink,
 } from 'lucide-react'
+import AnimatedCircle from '@/components/ui/AnimatedCircle'
 import { toast } from 'sonner'
 import BeamCircle from '@/components/ui/BeamCircle'
 
@@ -63,7 +64,7 @@ export default function ContactPage() {
             transition={{ delay: 0.1 }}
             className="font-heading text-6xl md:text-7xl tracking-wider text-gray-900 uppercase"
           >
-            Contact <span className="text-brand-orange">Us</span>
+            Contact <AnimatedCircle className="text-brand-orange">Us</AnimatedCircle>
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 12 }}
@@ -204,7 +205,7 @@ export default function ContactPage() {
               <div className="space-y-3">
                 {[
                   { q: 'How long does delivery take?', a: '2–5 business days across India. Same-day available in Hyderabad.' },
-                  { q: 'Do you offer bulk or team discounts?', a: 'Yes! Contact us for orders of 10+ units — we offer up to 20% off.' },
+                  { q: 'Do you offer bulk or team discounts?', a: 'Yes! Contact us for orders of 10+ units we offer up to 20% off.' },
                   { q: 'Can I return or exchange products?', a: '7-day hassle-free returns on all unused, original-packaged items.' },
                   { q: 'Are all products genuine?', a: '100% authentic gear from official brand distributors only.' },
                 ].map((faq) => (

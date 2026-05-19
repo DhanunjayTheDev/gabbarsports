@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
+import AnimatedCircle from '@/components/ui/AnimatedCircle'
 import {
   Trophy, Users, Package, Target, Heart, Shield, ArrowRight,
   CheckCircle2, Award, Star, MapPin,
@@ -110,11 +111,11 @@ export default function AboutPage() {
                 className="font-heading text-[clamp(52px,9vw,120px)] leading-[0.9] tracking-tight text-gray-900 uppercase mb-8"
               >
                 We Live<br />
-                <span className="text-brand-orange italic">Sport.</span>
+                <AnimatedCircle className="text-brand-orange italic">Sport.</AnimatedCircle>
               </motion.h1>
 
               <motion.p {...fadeUp(0.16)} className="text-gray-500 text-lg font-body leading-relaxed max-w-lg mb-10">
-                Gabbar Sportz Private Limited — Hyderabad's premier multi-sport retailer.
+                Gabbar Sportz Private Limited Hyderabad's premier multi-sport retailer.
                 From a single Kukatpally store in 2022 to 50,000+ athletes served nationwide.
               </motion.p>
 
@@ -204,7 +205,7 @@ export default function AboutPage() {
                 Our Story
               </motion.p>
               <motion.h2 {...fadeUp(0.08)} className="font-heading text-5xl md:text-6xl text-gray-900 tracking-wider leading-none mb-8 uppercase">
-                From Kukatpally<br />to <span className="text-brand-orange">the Nation.</span>
+                From Kukatpally<br />to <AnimatedCircle className="text-brand-orange">the Nation.</AnimatedCircle>
               </motion.h2>
 
               <div className="grid md:grid-cols-2 gap-8">
@@ -218,7 +219,7 @@ export default function AboutPage() {
                 <motion.div {...fadeUp(0.2)}>
                   <p className="text-gray-500 font-body leading-relaxed">
                     Today we offer <strong className="text-gray-900">5,000+ products</strong> across cricket, football, badminton,
-                    hockey, fitness, and athletic gear — all sourced directly from authorized distributors and global brands. Our promise:
+                    hockey, fitness, and athletic gear all sourced directly from authorized distributors and global brands. Our promise:
                     only authentic gear, only fair prices, only athlete-first service.
                   </p>
                 </motion.div>
@@ -232,7 +233,7 @@ export default function AboutPage() {
                 <p className="font-heading text-2xl md:text-3xl text-gray-900 tracking-wider italic leading-snug">
                   "Built by players, for players."
                 </p>
-                <p className="text-gray-400 font-accent text-sm mt-2">— Katamayya Shankar, CEO</p>
+                <p className="text-gray-400 font-accent text-sm mt-2">Katamayya Shankar, CEO</p>
               </motion.blockquote>
             </div>
           </div>
@@ -248,7 +249,7 @@ export default function AboutPage() {
                 Our Journey
               </motion.p>
               <motion.h2 {...fadeUp(0.08)} className="font-heading text-5xl md:text-6xl text-gray-900 tracking-wider uppercase leading-none">
-                02 — Timeline
+                02 Timeline
               </motion.h2>
             </div>
             <motion.p {...fadeUp(0.14)} className="text-gray-400 font-accent text-sm hidden md:block max-w-xs text-right">
@@ -293,7 +294,7 @@ export default function AboutPage() {
                 What We Stand For
               </motion.p>
               <motion.h2 {...fadeUp(0.08)} className="font-heading text-5xl md:text-6xl text-gray-900 tracking-wider uppercase leading-none">
-                03 — Values
+                03 Values
               </motion.h2>
             </div>
           </div>
@@ -330,7 +331,7 @@ export default function AboutPage() {
                 Meet the Team
               </motion.p>
               <motion.h2 {...fadeUp(0.08)} className="font-heading text-5xl md:text-6xl text-white tracking-wider uppercase leading-none">
-                04 — Founders
+                04 Founders
               </motion.h2>
             </div>
             <motion.p {...fadeUp(0.16)} className="text-white/35 font-body text-sm max-w-xs hidden md:block text-right">
@@ -369,7 +370,7 @@ export default function AboutPage() {
                 Why Choose Us
               </motion.p>
               <motion.h2 {...fadeUp(0.08)} className="font-heading text-5xl md:text-6xl text-gray-900 tracking-wider uppercase leading-none mb-6">
-                05 — The Gabbar Advantage
+                05 The Gabbar Advantage
               </motion.h2>
               <motion.p {...fadeUp(0.14)} className="text-gray-400 font-body leading-relaxed">
                 Six reasons 50,000+ Indian athletes trust us with their gear.
@@ -430,7 +431,7 @@ export default function AboutPage() {
             Ready to Level Up?
           </motion.p>
           <motion.h2 {...fadeUp(0.08)} className="font-heading text-6xl md:text-8xl text-gray-900 tracking-wider uppercase leading-none mb-8">
-            Shop the <span className="text-brand-orange">Best.</span>
+            Shop the <AnimatedCircle className="text-brand-orange">Best.</AnimatedCircle>
           </motion.h2>
           <motion.div {...fadeUp(0.16)} className="flex flex-wrap justify-center gap-3">
             <Link

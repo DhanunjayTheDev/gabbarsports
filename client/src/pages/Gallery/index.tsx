@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import ImageReveal from '@/components/ui/ImageReveal'
+import AnimatedCircle from '@/components/ui/AnimatedCircle'
 
 const SPORT_ITEMS = [
   {
@@ -82,7 +83,7 @@ export default function GalleryPage() {
             transition={{ delay: 0.1 }}
             className="font-heading text-6xl md:text-7xl tracking-wider text-gray-900 uppercase"
           >
-            Our <span className="text-brand-orange">Gallery</span>
+            Our <AnimatedCircle className="text-brand-orange">Gallery</AnimatedCircle>
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 12 }}
@@ -94,7 +95,7 @@ export default function GalleryPage() {
           </motion.p>
         </div>
 
-        {/* ── ImageReveal — Explore by Sport ── */}
+        {/* ── ImageReveal Explore by Sport ── */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}

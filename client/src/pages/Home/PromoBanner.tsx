@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { ArrowUpRight, Zap, Timer, Shirt } from 'lucide-react'
 import { GiCricketBat } from 'react-icons/gi'
+import AnimatedCircle from '@/components/ui/AnimatedCircle'
 
 const CRICKET_IMG = 'https://images.unsplash.com/photo-1540747913346-19212a4b423e?auto=format&fit=crop&w=800&q=80'
 const RUNNING_IMG = 'https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?auto=format&fit=crop&w=600&q=80'
@@ -16,7 +17,7 @@ export default function PromoBanner() {
           <div>
             <p className="text-brand-orange font-accent text-xs font-bold uppercase tracking-widest mb-2">Limited Time</p>
             <h2 className="font-heading text-4xl md:text-5xl text-gray-900 tracking-wider uppercase">
-              Exclusive <span className="text-brand-orange">Deals</span>
+              Exclusive <AnimatedCircle className="text-brand-orange">Deals</AnimatedCircle>
             </h2>
           </div>
           <Link
@@ -30,7 +31,7 @@ export default function PromoBanner() {
         {/* Bento grid */}
         <div className="grid md:grid-cols-3 gap-4 md:h-[520px]">
 
-          {/* Hero — Cricket Essentials: spans 2 cols */}
+          {/* Hero Cricket Essentials: spans 2 cols */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -85,10 +86,10 @@ export default function PromoBanner() {
             </div>
           </motion.div>
 
-          {/* Right column — stacked cards */}
+          {/* Right column stacked cards */}
           <div className="flex flex-col gap-4 md:h-full">
 
-            {/* Card 2 — Jerseys */}
+            {/* Card 2 Jerseys */}
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -121,7 +122,7 @@ export default function PromoBanner() {
               </div>
             </motion.div>
 
-            {/* Card 3 — Running Shoes */}
+            {/* Card 3 Running Shoes */}
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}

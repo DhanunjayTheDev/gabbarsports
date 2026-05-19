@@ -34,7 +34,7 @@ export default function LanyardSection() {
         }}
       />
 
-      {/* Full-section canvas — card hangs naturally in the right half */}
+      {/* Full-section canvas card hangs naturally in the right half */}
       <div className="absolute inset-0">
         <Suspense
           fallback={
@@ -47,7 +47,7 @@ export default function LanyardSection() {
         </Suspense>
       </div>
 
-      {/* Text — left overlay */}
+      {/* Text left overlay */}
       <div className="relative z-10 pointer-events-none min-h-[92vh] flex items-center">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 w-full">
           <div className="max-w-lg py-28">
@@ -88,7 +88,7 @@ export default function LanyardSection() {
               className="font-body leading-relaxed mb-8 max-w-sm"
               style={{ color: 'rgba(0,0,0,0.45)' }}
             >
-              Drag the card. Feel the physics. Gabbar Sportz — trusted by India's cricket
+              Drag the card. Feel the physics. Gabbar Sportz trusted by India's cricket
               stars and 50,000+ athletes nationwide.
             </motion.p>
 
@@ -145,7 +145,7 @@ export default function LanyardSection() {
         </div>
       </div>
 
-      {/* Drag hint — bottom center */}
+      {/* Drag hint bottom center */}
       <motion.div
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
