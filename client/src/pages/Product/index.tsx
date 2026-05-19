@@ -12,6 +12,7 @@ import { useCartStore } from '@/stores/cartStore'
 import { useWishlistStore } from '@/stores/wishlistStore'
 import { formatPrice, calculateDiscount } from '@/lib/utils'
 import { SkeletonText } from '@/components/ui/SkeletonCard'
+import { Lens } from '@/components/ui/Lens'
 import type { ApiResponse, Product, ProductVariant } from '@/types'
 
 export default function ProductPage() {
@@ -74,27 +75,39 @@ export default function ProductPage() {
               animate={{ opacity: 1 }}
               className="relative aspect-square rounded-2xl overflow-hidden bg-gray-50 border border-gray-100"
             >
-              <img
-                src={product.images[selectedImage] || product.thumbnail}
-                alt={product.name}
-                className="w-full h-full object-cover"
-              />
+              <Lens zoomFactor={2} lensSize={200} blurEdge>
+                <img
+                  src={product.images[selectedImage] || product.thumbnail}
+                  alt={product.name}
+                  className="w-full h-full object-cover"
+                />
+              </Lens>
+
               {discount >= 10 && (
-                <div className="absolute top-4 left-4 px-3 py-1.5 bg-brand-orange text-white text-sm font-bold font-accent rounded-lg">
+                <div className="absolute top-4 left-4 px-3 py-1.5 bg-brand-orange text-white text-sm font-bold font-accent rounded-lg z-[60]">
                   -{discount}% OFF
                 </div>
               )}
+
+              {/* Zoom hint */}
+              <div className="absolute bottom-4 right-4 flex items-center gap-1.5 px-2.5 py-1 bg-black/50 backdrop-blur-sm text-white text-[10px] font-accent rounded-full pointer-events-none z-[60]">
+                <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                  <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35M11 8v6M8 11h6"/>
+                </svg>
+                Hover to zoom
+              </div>
+
               {product.images.length > 1 && (
                 <>
                   <button
                     onClick={() => setSelectedImage((i) => Math.max(0, i - 1))}
-                    className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/90 border border-gray-200 flex items-center justify-center text-gray-600 hover:bg-white transition-all shadow-sm"
+                    className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/90 border border-gray-200 flex items-center justify-center text-gray-600 hover:bg-white transition-all shadow-sm z-[60]"
                   >
                     <ChevronLeft className="w-5 h-5" />
                   </button>
                   <button
                     onClick={() => setSelectedImage((i) => Math.min(product.images.length - 1, i + 1))}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/90 border border-gray-200 flex items-center justify-center text-gray-600 hover:bg-white transition-all shadow-sm"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/90 border border-gray-200 flex items-center justify-center text-gray-600 hover:bg-white transition-all shadow-sm z-[60]"
                   >
                     <ChevronRight className="w-5 h-5" />
                   </button>

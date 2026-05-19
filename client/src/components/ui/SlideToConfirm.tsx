@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState } from 'react'
 import { motion, useAnimation, useMotionValue, useTransform } from 'framer-motion'
 import { ArrowRight, Check } from 'lucide-react'
 import { cn } from '@/lib/utils'

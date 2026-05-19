@@ -3,100 +3,70 @@ import React from 'react'
 import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { gsap } from 'gsap'
-import { ShieldCheck, Truck, Star, Trophy, Users, Package, ArrowRight, ArrowUpRight } from 'lucide-react'
+import {
+  ShieldCheck, Truck, Star, Trophy, Sparkles,
+  ArrowRight, ArrowUpRight, TrendingUp, Users, Package, Zap,
+} from 'lucide-react'
 import { GiCricketBat, GiSoccerBall, GiShuttlecock, GiRunningShoe, GiPoloShirt } from 'react-icons/gi'
 
-const CRICKET_IMAGES = {
-  main: 'https://images.unsplash.com/WJUjQcx0sRM?auto=format&fit=crop&w=900&q=85',
-  action: 'https://images.unsplash.com/x7RAeWFHwu0?auto=format&fit=crop&w=500&q=80',
-  mainFallback: 'https://images.unsplash.com/photo-1540747913346-19212a4b423e?auto=format&fit=crop&w=900&q=85',
-  actionFallback: 'https://images.unsplash.com/7r6cX6FYNz0?auto=format&fit=crop&w=500&q=80',
-}
+const IMG_CRICKET = 'https://images.unsplash.com/photo-1540747913346-19212a4b423e?auto=format&fit=crop&w=900&q=85'
 
-const TRUST_BADGES = [
-  { icon: ShieldCheck, label: '100% Genuine' },
-  { icon: Truck, label: 'Free Delivery ₹999+' },
-  { icon: Star, label: '4.9 Rated' },
+const MARQUEE_ITEMS = [
+  'Cricket World Cup Gear',
+  'Pro Athlete Endorsed',
+  '100% Authentic Brands',
+  'Free Delivery Above ₹999',
+  '7-Day Easy Returns',
+  '50,000+ Happy Athletes',
+  '4.9 Star Rated',
+]
+
+const STATS = [
+  { value: '50K+', label: 'Happy Athletes', Icon: Users },
+  { value: '4.9★', label: 'Customer Rating', Icon: Star },
+  { value: '200+', label: 'Premium Products', Icon: Package },
+  { value: '15+', label: 'Sports Categories', Icon: Trophy },
 ]
 
 const CATEGORIES = [
-  { label: 'Cricket', sub: 'Bats · Pads · Helmets', href: '/category/cricket', Icon: GiCricketBat, color: '#FF6B00', bg: 'from-orange-50 to-amber-50/60', border: 'border-orange-100' },
-  { label: 'Football', sub: 'Boots · Balls · Shin', href: '/category/football', Icon: GiSoccerBall, color: '#22C55E', bg: 'from-green-50 to-emerald-50/60', border: 'border-green-100' },
-  { label: 'Badminton', sub: 'Rackets · Shuttles', href: '/category/badminton', Icon: GiShuttlecock, color: '#EAB308', bg: 'from-yellow-50 to-lime-50/60', border: 'border-yellow-100' },
-  { label: 'Shoes', sub: 'Sports & Training', href: '/category/shoes', Icon: GiRunningShoe, color: '#A855F7', bg: 'from-purple-50 to-violet-50/60', border: 'border-purple-100' },
-  { label: 'Jerseys', sub: 'Club & National', href: '/category/jerseys', Icon: GiPoloShirt, color: '#EF4444', bg: 'from-red-50 to-rose-50/60', border: 'border-red-100' },
+  { label: 'Cricket', sub: 'Bats · Pads', href: '/category/cricket', Icon: GiCricketBat, color: '#FF6B00' },
+  { label: 'Football', sub: 'Boots · Balls', href: '/category/football', Icon: GiSoccerBall, color: '#22C55E' },
+  { label: 'Badminton', sub: 'Rackets', href: '/category/badminton', Icon: GiShuttlecock, color: '#EAB308' },
+  { label: 'Shoes', sub: 'Sports & Training', href: '/category/shoes', Icon: GiRunningShoe, color: '#A855F7' },
+  { label: 'Jerseys', sub: 'Club & National', href: '/category/jerseys', Icon: GiPoloShirt, color: '#EF4444' },
 ]
 
-function CategoryCard({ label, sub, href, Icon, color, bg, border }: typeof CATEGORIES[0]) {
+function CategoryPill({ label, sub, href, Icon, color }: typeof CATEGORIES[0]) {
   const x = useMotionValue(0)
   const y = useMotionValue(0)
-  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [10, -10]), { stiffness: 500, damping: 30 })
-  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-10, 10]), { stiffness: 500, damping: 30 })
-
-  function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
-    const rect = e.currentTarget.getBoundingClientRect()
-    x.set((e.clientX - rect.left - rect.width / 2) / rect.width)
-    y.set((e.clientY - rect.top - rect.height / 2) / rect.height)
-  }
+  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [6, -6]), { stiffness: 400, damping: 30 })
+  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-6, 6]), { stiffness: 400, damping: 30 })
 
   return (
-    <Link to={href} style={{ perspective: '900px' }}>
+    <Link to={href} style={{ perspective: '800px' }}>
       <motion.div
-        onMouseMove={handleMouseMove}
+        onMouseMove={(e) => {
+          const r = e.currentTarget.getBoundingClientRect()
+          x.set((e.clientX - r.left - r.width / 2) / r.width)
+          y.set((e.clientY - r.top - r.height / 2) / r.height)
+        }}
         onMouseLeave={() => { x.set(0); y.set(0) }}
         style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}
-        whileHover={{
-          scale: 1.06,
-          boxShadow: `0 20px 50px -10px ${color}40, 0 8px 20px -6px ${color}25`,
-        }}
-        initial={{ boxShadow: '0 1px 6px rgba(0,0,0,0.05)' }}
+        whileHover={{ scale: 1.03, boxShadow: `0 12px 32px -8px ${color}30` }}
         transition={{ scale: { type: 'spring', stiffness: 500, damping: 30 } }}
-        className={`relative overflow-hidden rounded-3xl bg-gradient-to-br ${bg} border ${border} cursor-pointer p-5 flex flex-col gap-5`}
+        className="group flex items-center gap-3 px-4 py-3.5 rounded-2xl bg-white border border-gray-200/80 hover:border-gray-300 cursor-pointer transition-colors duration-200"
       >
-        {/* Watermark icon in background */}
         <div
-          className="absolute -right-5 -bottom-5 opacity-[0.07] pointer-events-none"
-          style={{ transform: 'translateZ(0)' }}
+          className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+          style={{ backgroundColor: `${color}15`, border: `1px solid ${color}25` }}
         >
-          <Icon size={100} style={{ color }} />
+          <Icon size={20} style={{ color }} />
         </div>
-
-        {/* Icon box */}
-        <div style={{ transform: 'translateZ(20px)' }}>
-          <motion.div
-            whileHover={{ scale: 1.12 }}
-            transition={{ type: 'spring', stiffness: 600, damping: 20 }}
-            className="w-12 h-12 rounded-2xl flex items-center justify-center"
-            style={{ backgroundColor: `${color}15`, border: `1.5px solid ${color}30` }}
-          >
-            <Icon size={28} style={{ color }} />
-          </motion.div>
+        <div className="flex-1 min-w-0">
+          <p className="text-gray-900 text-sm font-heading tracking-wider leading-none">{label}</p>
+          <p className="text-gray-400 text-[11px] font-accent mt-0.5">{sub}</p>
         </div>
-
-        {/* Text block directly below icon, no gap */}
-        <div className="flex flex-col gap-0.5" style={{ transform: 'translateZ(16px)' }}>
-          <p className="font-heading text-xl text-gray-900 tracking-wide leading-none">{label}</p>
-          <p className="text-gray-400 text-[11px] font-accent">{sub}</p>
-          <motion.div
-            className="flex items-center gap-1 mt-3"
-            whileHover={{ x: 4 }}
-            transition={{ type: 'spring', stiffness: 500 }}
-          >
-            <span className="text-[11px] font-accent font-bold uppercase tracking-widest" style={{ color }}>
-              Shop Now
-            </span>
-            <ArrowUpRight size={12} style={{ color }} />
-          </motion.div>
-        </div>
-
-        {/* Hover accent left bar */}
-        <motion.div
-          className="absolute left-0 top-4 bottom-4 w-[3px] rounded-full origin-bottom"
-          initial={{ scaleY: 0 }}
-          whileHover={{ scaleY: 1 }}
-          transition={{ duration: 0.25 }}
-          style={{ backgroundColor: color }}
-        />
+        <ArrowUpRight size={13} className="text-gray-300 group-hover:text-gray-900 transition-colors" />
       </motion.div>
     </Link>
   )
@@ -104,202 +74,300 @@ function CategoryCard({ label, sub, href, Icon, color, bg, border }: typeof CATE
 
 export default function HeroSection() {
   const contentRef = useRef<HTMLDivElement>(null)
-  const imagesRef = useRef<HTMLDivElement>(null)
-  const [mainImgSrc, setMainImgSrc] = React.useState(CRICKET_IMAGES.main)
-  const [actionImgSrc, setActionImgSrc] = React.useState(CRICKET_IMAGES.action)
+  const imageRef = useRef<HTMLDivElement>(null)
+  const [imgErr, setImgErr] = React.useState(false)
 
   useEffect(() => {
     const tl = gsap.timeline({ delay: 0.1 })
-    tl.fromTo(
-      contentRef.current,
-      { opacity: 0, x: -40 },
-      { opacity: 1, x: 0, duration: 0.8, ease: 'power3.out' },
-    ).fromTo(
-      imagesRef.current,
-      { opacity: 0, x: 40 },
-      { opacity: 1, x: 0, duration: 0.8, ease: 'power3.out' },
-      '-=0.6',
-    )
+    tl.fromTo(contentRef.current, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' })
+      .fromTo(imageRef.current, { opacity: 0, x: 30, scale: 0.95 }, { opacity: 1, x: 0, scale: 1, duration: 0.9, ease: 'power3.out' }, '-=0.6')
   }, [])
 
   return (
-    <section className="relative min-h-screen bg-white flex items-center overflow-hidden">
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-brand-orange/4 rounded-full blur-3xl -translate-y-1/3 translate-x-1/3 pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-brand-blue/4 rounded-full blur-3xl translate-y-1/3 -translate-x-1/3 pointer-events-none" />
+    <section className="relative min-h-screen bg-white flex flex-col overflow-hidden">
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16 w-full">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
+      {/* CSS dot-grid background — no canvas, always visible */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage: 'radial-gradient(circle, #CACACA 1.5px, transparent 1.5px)',
+          backgroundSize: '36px 36px',
+        }}
+      />
+      {/* Radial fade to white at edges */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: 'radial-gradient(ellipse 80% 80% at 50% 50%, transparent 40%, white 85%)',
+        }}
+      />
 
-          {/* Left: Content */}
-          <div ref={contentRef} className="space-y-8" style={{ opacity: 0 }}>
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-brand-orange/8 rounded-full border border-brand-orange/20">
-              <Trophy className="w-3.5 h-3.5 text-brand-orange" />
-              <span className="text-brand-orange text-sm font-accent font-bold uppercase tracking-widest">
-                India's #1 Cricket Store
+      {/* Orange glow accent */}
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-brand-orange/6 rounded-full blur-[120px] -translate-y-1/3 translate-x-1/4 pointer-events-none" />
+
+      {/* ── Marquee strip ── */}
+      <div className="absolute top-20 left-0 right-0 z-[5] border-y border-gray-100 bg-white/80 backdrop-blur-sm overflow-hidden py-3">
+        <div className="flex animate-marquee gap-10 whitespace-nowrap">
+          {Array(3).fill(0).flatMap((_, batch) =>
+            MARQUEE_ITEMS.map((item, i) => (
+              <span key={`${batch}-${i}`} className="inline-flex items-center gap-2.5 text-gray-500 font-accent text-xs uppercase tracking-[0.2em]">
+                <Sparkles className="w-3 h-3 text-brand-orange flex-shrink-0" />
+                {item}
+              </span>
+            ))
+          )}
+        </div>
+      </div>
+
+      {/* ── Main content ── */}
+      <div className="relative z-[4] max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-44 pb-12 w-full flex-1 flex flex-col">
+
+        {/* Live ticker + index */}
+        <motion.div
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="flex items-center justify-between mb-10"
+        >
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 px-3 py-1.5 bg-red-50 border border-red-100 rounded-full">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500" />
+              </span>
+              <span className="text-red-600 text-[10px] font-accent font-bold uppercase tracking-widest">Live</span>
+            </div>
+            <p className="text-gray-500 text-xs font-accent">
+              Cricket World Cup gear · <span className="text-gray-900 font-semibold">Up to 40% off</span>
+            </p>
+          </div>
+          <div className="hidden md:flex items-center gap-3">
+            <span className="text-gray-300 font-heading text-sm tracking-widest">01</span>
+            <span className="w-12 h-px bg-gray-200" />
+            <span className="text-gray-400 text-[11px] font-accent uppercase tracking-[0.2em]">Hero</span>
+          </div>
+        </motion.div>
+
+        {/* Two-column layout */}
+        <div className="grid lg:grid-cols-12 gap-10 lg:gap-16 items-center mb-14">
+
+          {/* ── LEFT: Editorial text ── */}
+          <div
+            ref={contentRef}
+            className="lg:col-span-7 flex flex-col"
+            style={{ opacity: 0 }}
+          >
+            {/* Eyebrow */}
+            <div className="inline-flex items-center gap-2 mb-7 self-start px-3 py-1.5 rounded-full border border-brand-orange/25 bg-brand-orange/6">
+              <Zap className="w-3 h-3 text-brand-orange fill-brand-orange" />
+              <span className="text-brand-orange text-[10px] font-accent font-bold uppercase tracking-[0.25em]">
+                India's #1 Sports Store
               </span>
             </div>
 
-            <div>
-              <h1 className="font-heading text-[72px] sm:text-[88px] lg:text-[96px] leading-[0.92] tracking-wide text-gray-900 uppercase">
-                PLAY YOUR
-                <br />
-                <span className="relative inline-block">
-                  BEST
-                  <span className="text-brand-orange"> GAME.</span>
+            {/* Headline */}
+            <h1 className="font-heading leading-[0.82] tracking-wide uppercase mb-8">
+              <span className="block text-[clamp(72px,11vw,156px)] text-gray-900">GAME</span>
+              <span className="block text-[clamp(72px,11vw,156px)] text-gray-900">
+                ON<span className="text-brand-orange">.</span>
+              </span>
+              <span className="block text-[clamp(40px,6vw,84px)] mt-4 text-gray-400">
+                GEAR UP{' '}
+                <span className="relative inline-block text-brand-orange italic">
+                  NOW
                   <svg
-                    className="absolute -bottom-2 left-0 w-full"
-                    height="6"
-                    viewBox="0 0 300 6"
+                    className="absolute -bottom-1 left-0 w-full"
+                    height="8"
+                    viewBox="0 0 200 8"
                     fill="none"
+                    preserveAspectRatio="none"
                   >
-                    <path d="M0 3 Q150 0 300 3" stroke="#FF6B00" strokeWidth="3" strokeLinecap="round" />
+                    <path d="M2 5 Q60 1 100 4 T198 5" stroke="#FF6B00" strokeWidth="3.5" strokeLinecap="round" fill="none" />
                   </svg>
                 </span>
-              </h1>
-            </div>
+                <span className="text-brand-orange">.</span>
+              </span>
+            </h1>
 
-            <p className="text-gray-500 text-lg font-body leading-relaxed max-w-md">
-              India's premier cricket store. Premium bats, pads, helmets &amp; complete cricket gear trusted by 50,000+ athletes.
+            <p className="text-gray-500 text-base lg:text-lg font-body leading-relaxed max-w-[480px] mb-9">
+              Premium gear for cricket, football, badminton & beyond. Trusted by
+              <span className="text-gray-900 font-semibold"> 50,000+ athletes </span>
+              across India.
             </p>
 
-            <div className="flex flex-wrap gap-4">
-              <Link to="/category/cricket" className="btn-primary flex items-center gap-2.5 text-base py-4 px-8">
-                Shop Cricket <ArrowRight className="w-5 h-5" />
+            {/* CTAs */}
+            <div className="flex flex-wrap gap-3 mb-10">
+              <Link
+                to="/category/cricket"
+                className="group inline-flex items-center gap-2.5 px-7 py-4 bg-gray-900 hover:bg-brand-orange text-white font-accent font-semibold text-sm rounded-2xl transition-all duration-300 hover:-translate-y-0.5 shadow-[0_8px_24px_rgba(0,0,0,0.12)] hover:shadow-[0_12px_30px_rgba(255,107,0,0.35)]"
+              >
+                Shop Cricket
+                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </Link>
-              <Link to="/category/all" className="btn-ghost flex items-center gap-2 text-base py-4 px-8">
+              <Link
+                to="/search"
+                className="inline-flex items-center gap-2 px-7 py-4 bg-white border border-gray-200 hover:border-gray-900 text-gray-700 hover:text-gray-900 font-accent font-semibold text-sm rounded-2xl transition-all duration-300 hover:-translate-y-0.5"
+              >
                 All Sports
               </Link>
             </div>
 
-            <div className="flex flex-wrap gap-6 pt-2">
-              {TRUST_BADGES.map(({ icon: Icon, label }) => (
-                <div key={label} className="flex items-center gap-2.5">
-                  <div className="w-9 h-9 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center">
-                    <Icon className="w-4 h-4 text-brand-orange" />
-                  </div>
-                  <span className="text-gray-600 text-sm font-accent font-medium">{label}</span>
-                </div>
-              ))}
-            </div>
-
-            <div className="flex gap-10 pt-2 border-t border-gray-100">
+            {/* Trust row */}
+            <div className="flex flex-wrap gap-x-6 gap-y-3 pt-6 border-t border-gray-100">
               {[
-                { value: '50K+', label: 'Athletes', icon: Users },
-                { value: '5000+', label: 'Products', icon: Package },
-                { value: '100+', label: 'Top Brands', icon: Trophy },
-              ].map(({ value, label, icon: Icon }) => (
-                <div key={label}>
-                  <div className="font-heading text-3xl text-gray-900">{value}</div>
-                  <div className="flex items-center gap-1 text-gray-400 text-xs font-accent uppercase tracking-wider mt-0.5">
-                    <Icon className="w-3 h-3" />
-                    {label}
-                  </div>
+                { Icon: ShieldCheck, text: '100% Genuine' },
+                { Icon: Truck, text: 'Free Delivery ₹999+' },
+                { Icon: Star, text: '4.9 Rated' },
+              ].map(({ Icon, text }) => (
+                <div key={text} className="flex items-center gap-2">
+                  <Icon className="w-4 h-4 text-brand-orange" />
+                  <span className="text-gray-500 text-sm font-accent">{text}</span>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Right: Images */}
-          <div ref={imagesRef} className="relative h-[580px] lg:h-[640px]" style={{ opacity: 0 }}>
-            <div className="absolute top-8 right-8 w-72 h-72 bg-brand-orange/8 rounded-full -z-0" />
-            <div className="absolute bottom-12 left-4 w-40 h-40 bg-brand-blue/6 rounded-full -z-0" />
+          {/* ── RIGHT: Hero product card ── */}
+          <div
+            ref={imageRef}
+            className="lg:col-span-5 relative"
+            style={{ opacity: 0 }}
+          >
+            <div className="relative">
 
-            {/* Main large image */}
-            <motion.div
-              initial={{ y: 0 }}
-              animate={{ y: [-6, 6, -6] }}
-              transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
-              className="absolute top-0 right-0 w-[78%] h-[78%] rounded-3xl overflow-hidden shadow-hero-image z-10"
-            >
-              <img
-                src={mainImgSrc}
-                alt="Cricket equipment"
-                className="w-full h-full object-cover object-center"
-                loading="eager"
-                onError={() => setMainImgSrc(CRICKET_IMAGES.mainFallback)}
+              {/* Rotated backdrop */}
+              <motion.div
+                animate={{ y: [0, -6, 0] }}
+                transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+                className="absolute top-4 right-4 w-full aspect-[4/5] rounded-[2.5rem] bg-gradient-to-br from-brand-orange/12 via-amber-50 to-orange-100/30 border border-brand-orange/12 rotate-[3deg]"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-              <div className="absolute top-4 left-4 flex items-center gap-1.5 px-3 py-1.5 bg-white/90 backdrop-blur-sm rounded-full shadow-sm">
-                <Trophy className="w-3.5 h-3.5 text-brand-orange" />
-                <span className="text-xs font-accent font-bold text-gray-900">Pro Cricket Gear</span>
-              </div>
-            </motion.div>
 
-            {/* Secondary image */}
-            <motion.div
-              initial={{ y: 0 }}
-              animate={{ y: [4, -4, 4] }}
-              transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-              className="absolute bottom-0 left-0 w-[50%] h-[46%] rounded-2xl overflow-hidden shadow-hero-image z-20 border-4 border-white"
-            >
-              <img
-                src={actionImgSrc}
-                alt="Cricket training"
-                className="w-full h-full object-cover object-center"
-                loading="lazy"
-                onError={() => setActionImgSrc(CRICKET_IMAGES.actionFallback)}
-              />
-            </motion.div>
-
-            {/* Floating rating card */}
-            <motion.div
-              initial={{ y: 0 }}
-              animate={{ y: [-3, 3, -3] }}
-              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
-              className="absolute top-[30%] -left-4 lg:-left-8 z-30 bg-white rounded-2xl px-5 py-4 shadow-card-hover border border-gray-100 min-w-[160px]"
-            >
-              <div className="flex items-center gap-1.5">
-                <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
-                <span className="text-2xl font-heading text-gray-900">4.9</span>
-              </div>
-              <div className="text-gray-500 text-xs font-accent mt-0.5">12,000+ Reviews</div>
-              <div className="flex items-center gap-1 mt-2">
-                {[...Array(4)].map((_, i) => (
-                  <div key={i} className="w-6 h-6 rounded-full bg-gray-100 border-2 border-white flex items-center justify-center">
-                    <Users className="w-3 h-3 text-gray-400" />
+              {/* Main card */}
+              <motion.div
+                animate={{ y: [-4, 4, -4] }}
+                transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
+                className="relative aspect-[4/5] rounded-[2.5rem] overflow-hidden bg-gray-100 border border-gray-100 shadow-[0_40px_80px_-20px_rgba(0,0,0,0.22)]"
+              >
+                {!imgErr ? (
+                  <img
+                    src={IMG_CRICKET}
+                    alt="Cricket gear"
+                    className="w-full h-full object-cover"
+                    loading="eager"
+                    onError={() => setImgErr(true)}
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
+                    <GiCricketBat size={80} className="text-brand-orange/40" />
                   </div>
-                ))}
-                <div className="w-6 h-6 rounded-full bg-brand-orange flex items-center justify-center text-[10px] font-bold text-white border-2 border-white">+</div>
-              </div>
-            </motion.div>
+                )}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
 
-            {/* Free delivery badge */}
-            <motion.div
-              initial={{ y: 0 }}
-              animate={{ y: [3, -3, 3] }}
-              transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut', delay: 1.5 }}
-              className="absolute bottom-[30%] right-0 z-30 bg-brand-orange text-white rounded-2xl px-4 py-3 shadow-brand-orange"
-            >
-              <div className="flex items-center gap-1.5">
-                <Truck className="w-3.5 h-3.5" />
-                <span className="text-xs font-accent font-bold uppercase tracking-wider">Free Delivery</span>
-              </div>
-              <div className="text-white/80 text-[11px] font-body mt-0.5">Orders above ₹999</div>
-            </motion.div>
+                <div className="absolute top-5 right-5 flex items-center gap-1.5 px-3 py-1.5 bg-brand-orange text-white rounded-full shadow-[0_8px_24px_rgba(255,107,0,0.5)]">
+                  <Sparkles className="w-3 h-3" />
+                  <span className="text-[10px] font-accent font-bold uppercase tracking-widest">New Drop</span>
+                </div>
+                <div className="absolute top-5 left-5 px-3 py-1.5 bg-white/95 backdrop-blur-sm rounded-full text-[10px] font-accent font-bold text-gray-900 uppercase tracking-widest">
+                  Cricket
+                </div>
+                <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between">
+                  <div>
+                    <p className="text-white/60 text-[10px] font-accent uppercase tracking-widest mb-1">Featured</p>
+                    <p className="text-white font-heading text-xl tracking-wider">Pro Cricket Gear</p>
+                  </div>
+                  <Link
+                    to="/category/cricket"
+                    className="w-12 h-12 rounded-2xl bg-brand-orange flex items-center justify-center text-white shadow-[0_8px_24px_rgba(255,107,0,0.5)] hover:bg-white hover:text-brand-orange transition-all duration-300 group/btn"
+                  >
+                    <ArrowUpRight className="w-5 h-5 group-hover/btn:rotate-45 transition-transform" />
+                  </Link>
+                </div>
+              </motion.div>
+
+              {/* Floating chip — left */}
+              <motion.div
+                initial={{ opacity: 0, x: -20, y: 10 }}
+                animate={{ opacity: 1, x: 0, y: 0 }}
+                transition={{ delay: 1, duration: 0.6 }}
+                whileHover={{ y: -4 }}
+                className="absolute -left-6 top-12 bg-white rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.12)] border border-gray-100 p-4 min-w-[130px]"
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-8 h-8 rounded-xl bg-brand-orange/10 border border-brand-orange/20 flex items-center justify-center">
+                    <TrendingUp className="w-4 h-4 text-brand-orange" />
+                  </div>
+                  <span className="text-gray-400 text-[10px] font-accent uppercase tracking-widest">Sales</span>
+                </div>
+                <p className="font-heading text-3xl text-gray-900 tracking-wider leading-none">+248%</p>
+                <p className="text-gray-400 text-[10px] font-accent mt-1.5">This week</p>
+              </motion.div>
+
+              {/* Floating chip — right */}
+              <motion.div
+                initial={{ opacity: 0, x: 20, y: -10 }}
+                animate={{ opacity: 1, x: 0, y: 0 }}
+                transition={{ delay: 1.2, duration: 0.6 }}
+                whileHover={{ y: -4 }}
+                className="absolute -right-4 bottom-12 bg-gray-900 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.22)] p-4 min-w-[120px]"
+              >
+                <div className="flex gap-0.5 mb-2">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-3 h-3 fill-amber-400 text-amber-400" />
+                  ))}
+                </div>
+                <p className="font-heading text-3xl text-white tracking-wider leading-none">4.9</p>
+                <p className="text-white/40 text-[10px] font-accent mt-1.5">12K+ Reviews</p>
+              </motion.div>
+
+            </div>
           </div>
         </div>
 
-        {/* Category quick links 3D tilt cards */}
+        {/* ── Stats bar ── */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 1.0 }}
-          className="mt-16 pt-8 border-t border-gray-100"
+          transition={{ delay: 0.7, duration: 0.6 }}
+          className="grid grid-cols-2 md:grid-cols-4 gap-px bg-gray-100 rounded-3xl overflow-hidden border border-gray-100 mb-12"
         >
-          <p className="text-xs text-gray-400 font-accent uppercase tracking-widest mb-5">Popular Categories</p>
+          {STATS.map(({ value, label, Icon }) => (
+            <div
+              key={label}
+              className="bg-white p-6 md:p-8 hover:bg-gray-50/50 transition-colors group cursor-default"
+            >
+              <Icon className="w-5 h-5 text-brand-orange mb-3 group-hover:scale-110 transition-transform" />
+              <p className="font-heading text-4xl md:text-5xl text-gray-900 tracking-wider leading-none">{value}</p>
+              <p className="text-gray-400 text-[10px] md:text-xs font-accent uppercase tracking-widest mt-2">{label}</p>
+            </div>
+          ))}
+        </motion.div>
+
+        {/* ── Category pills ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.9 }}
+        >
+          <div className="flex items-center justify-between mb-5">
+            <p className="text-gray-400 text-[11px] font-accent uppercase tracking-[0.2em]">Popular Categories</p>
+            <Link to="/search" className="text-gray-500 hover:text-brand-orange text-xs font-accent flex items-center gap-1 transition-colors">
+              View all <ArrowRight className="w-3 h-3" />
+            </Link>
+          </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
             {CATEGORIES.map((cat, i) => (
               <motion.div
                 key={cat.label}
-                initial={{ opacity: 0, y: 16 }}
+                initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.1 + i * 0.08, duration: 0.45, ease: 'easeOut' }}
+                transition={{ delay: 1 + i * 0.07, duration: 0.4, ease: 'easeOut' }}
               >
-                <CategoryCard {...cat} />
+                <CategoryPill {...cat} />
               </motion.div>
             ))}
           </div>
         </motion.div>
+
       </div>
     </section>
   )

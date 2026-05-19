@@ -72,7 +72,7 @@ export function LoopingWords({ words, className }: LoopingWordsProps) {
       onMouseLeave={() => setIsHovered(false)}
     >
       {/*
-        Font inline on parent — avoids Tailwind class load-order issues.
+        Font inline on parent avoids Tailwind class load-order issues.
         leading-none (line-height:1) → each word exactly 1em tall.
         h-[3em] shows 3 words; center word (1em–2em) is in the visible zone.
       */}
@@ -96,7 +96,7 @@ export function LoopingWords({ words, className }: LoopingWordsProps) {
           ))}
         </motion.ul>
 
-        {/* Top + bottom fade — 22%/78% gives center word full visibility */}
+        {/* Top + bottom fade 22%/78% gives center word full visibility */}
         <div
           className="pointer-events-none absolute inset-0 z-10"
           style={{
@@ -105,7 +105,7 @@ export function LoopingWords({ words, className }: LoopingWordsProps) {
           }}
         />
 
-        {/* Bracket selector — 1em tall, centered on middle word */}
+        {/* Bracket selector 1em tall, centered on middle word */}
         <motion.div
           className="absolute left-1/2 top-1/2 h-[1em] -translate-x-1/2 -translate-y-1/2 pointer-events-none z-20"
           animate={{ width: selectorWidth }}

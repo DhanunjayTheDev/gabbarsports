@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
 import ImageSlider3D from '@/components/ui/ImageSlider3D'
 
-// Sports equipment images — bats, balls, pads, gloves, rackets, shuttlecocks,
+// Sports equipment images bats, balls, pads, gloves, rackets, shuttlecocks,
 // footballs, hockey sticks, shoes, helmets, jerseys, accessories
 const EQUIPMENT_IMAGES = [
   // Cricket bat

@@ -26,7 +26,7 @@ async function seed() {
   console.log('Cleared existing data.')
 
   // ─── Users ───────────────────────────────────────────────────────────
-  // Plain text — User pre-save hook hashes once. Do NOT pre-hash here.
+  // Plain text User pre-save hook hashes once. Do NOT pre-hash here.
   const [admin, customer1, customer2] = await User.create([
     {
       name: 'Gabbar Admin',

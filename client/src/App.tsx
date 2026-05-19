@@ -18,6 +18,9 @@ import ProfilePage from '@/pages/Dashboard/Profile'
 import NotFoundPage from '@/pages/NotFound'
 import ProtectedRoute from '@/components/auth/ProtectedRoute'
 import SearchPage from '@/pages/Search'
+import AboutPage from '@/pages/About'
+import GalleryPage from '@/pages/Gallery'
+import ContactPage from '@/pages/Contact'
 
 function App() {
   useEffect(() => {
@@ -45,6 +48,9 @@ function App() {
         <Route path="product/:slug" element={<ProductPage />} />
         <Route path="cart" element={<CartPage />} />
         <Route path="search" element={<SearchPage />} />
+        <Route path="about" element={<AboutPage />} />
+        <Route path="gallery" element={<GalleryPage />} />
+        <Route path="contact" element={<ContactPage />} />
         <Route path="checkout" element={
           <ProtectedRoute>
             <CheckoutPage />

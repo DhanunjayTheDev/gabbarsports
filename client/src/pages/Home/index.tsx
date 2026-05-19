@@ -5,6 +5,7 @@ import TrendingProducts from './TrendingProducts'
 import AboutSection from './AboutSection'
 import EquipmentSlider from './EquipmentSlider'
 import FoundersStrip from './FoundersStrip'
+import LanyardSection from './LanyardSection'
 import { SkeletonProductGrid } from '@/components/ui/SkeletonCard'
 
 const BrandsSection = lazy(() => import('./BrandsSection'))
@@ -20,6 +21,7 @@ export default function HomePage() {
       <TrendingProducts />
       <AboutSection />
       <EquipmentSlider />
+      <LanyardSection />
       <Suspense fallback={<div className="h-32" />}>
         <PromoBanner />
       </Suspense>
