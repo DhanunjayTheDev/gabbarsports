@@ -6,6 +6,7 @@ import { api } from '@/lib/axios'
 import { queryClient } from '@/lib/queryClient'
 import { formatDate, formatPrice } from '@/lib/utils'
 import type { Coupon, ApiResponse } from '@/types'
+import { Dropdown } from '@/components/ui/Dropdown'
 
 export default function CouponsPage() {
   const [showForm, setShowForm] = useState(false)
@@ -68,10 +69,14 @@ export default function CouponsPage() {
             ))}
             <div>
               <label className="block text-xs text-gray-500 mb-1.5 uppercase tracking-wider">Type</label>
-              <select value={form.type} onChange={(e) => setForm((f) => ({ ...f, type: e.target.value }))} className="input-admin">
-                <option value="percentage">Percentage (%)</option>
-                <option value="fixed">Fixed (₹)</option>
-              </select>
+              <Dropdown
+                value={form.type}
+                onChange={(v) => setForm((f) => ({ ...f, type: v }))}
+                options={[
+                  { value: 'percentage', label: 'Percentage (%)' },
+                  { value: 'fixed', label: 'Fixed (₹)' },
+                ]}
+              />
             </div>
           </div>
           <div className="flex gap-3 mt-4">

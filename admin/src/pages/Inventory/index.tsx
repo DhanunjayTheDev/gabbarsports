@@ -50,7 +50,7 @@ export default function InventoryPage() {
                 <p className="text-gray-400 text-sm">No inventory data</p>
               </td></tr>
             ) : (
-              items.map((item) => {
+              items.filter((item) => item.product).map((item) => {
                 const available = item.stockQuantity - item.reservedQuantity
                 const isLow = item.stockQuantity <= item.lowStockThreshold
                 return (

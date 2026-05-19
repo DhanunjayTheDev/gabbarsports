@@ -91,7 +91,7 @@ export default function FeaturedCategories() {
         {/* Bento Grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 auto-rows-[220px] gap-3 md:gap-4">
 
-          {/* Cricket — big featured card spans 2 cols x 2 rows */}
+          {/* Cricket big featured card spans 2 cols x 2 rows */}
           <motion.div
             initial={{ opacity: 0, scale: 0.97 }}
             whileInView={{ opacity: 1, scale: 1 }}

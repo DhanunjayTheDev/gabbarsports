@@ -9,10 +9,16 @@ import { getPagination, buildMeta } from '../utils/pagination'
 import { emitToAdmin, emitToUser } from '../config/socket'
 import { queueEmail, queueInvoice } from '../utils/queues'
 
-const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID || '',
-  key_secret: process.env.RAZORPAY_KEY_SECRET || '',
-})
+let _razorpay: Razorpay | null = null
+function getRazorpay(): Razorpay {
+  if (!_razorpay) {
+    _razorpay = new Razorpay({
+      key_id: process.env.RAZORPAY_KEY_ID || '',
+      key_secret: process.env.RAZORPAY_KEY_SECRET || '',
+    })
+  }
+  return _razorpay
+}
 
 const SHIPPING_THRESHOLD = 999
 const SHIPPING_CHARGE = 99
@@ -95,7 +101,7 @@ export async function createOrder(req: Request, res: Response, next: NextFunctio
     const total = subtotal + shippingCharge - discount
 
     // Create Razorpay order
-    const rzpOrder = await razorpay.orders.create({
+    const rzpOrder = await getRazorpay().orders.create({
       amount: Math.round(total * 100),
       currency: 'INR',
       receipt: `gabbar-${Date.now()}`,

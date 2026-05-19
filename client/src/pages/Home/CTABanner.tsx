@@ -11,14 +11,60 @@ export default function CTABanner() {
   return (
     <section className="relative bg-[#111111] overflow-hidden py-20 md:py-28">
 
-      {/* Huge watermark text */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden">
-        <span
-          className="font-heading text-[18vw] leading-none tracking-widest uppercase whitespace-nowrap"
-          style={{ color: 'rgba(255,255,255,0.04)' }}
+      {/* Scrolling watermark marquee pointer-events-auto so hover works */}
+      <div className="absolute inset-0 flex flex-col justify-center select-none overflow-hidden gap-4 group/marquee">
+        {/* Row 1 scrolls left, pauses + highlights on hover */}
+        <div
+          className="flex items-center whitespace-nowrap"
+          style={{ animation: 'cta-left 18s linear infinite', width: 'max-content', animationPlayState: 'running' }}
+          onMouseEnter={(e) => (e.currentTarget.style.animationPlayState = 'paused')}
+          onMouseLeave={(e) => (e.currentTarget.style.animationPlayState = 'running')}
         >
-          GABBAR SPORTS
-        </span>
+          {[...Array(4)].map((_, i) => (
+            <span key={i} className="inline-flex items-center">
+              <span
+                className="font-heading text-[11vw] leading-none tracking-widest uppercase px-8 cursor-default transition-colors duration-300 hover:text-brand-orange"
+                style={{ color: 'rgba(255,255,255,0.06)' }}
+              >
+                GABBAR SPORTS
+              </span>
+              <span className="font-heading text-[11vw] leading-none px-6 text-brand-orange/10 hover:text-brand-orange transition-colors duration-300 cursor-default">·</span>
+              <span
+                className="font-heading text-[11vw] leading-none tracking-wider uppercase px-8 cursor-default transition-colors duration-300 hover:text-white"
+                style={{ color: 'rgba(255,255,255,0.06)' }}
+              >
+                +91-98765 43210
+              </span>
+              <span className="font-heading text-[11vw] leading-none px-6 text-brand-orange/10 hover:text-brand-orange transition-colors duration-300 cursor-default">·</span>
+            </span>
+          ))}
+        </div>
+        {/* Row 2 scrolls right */}
+        <div
+          className="flex items-center whitespace-nowrap"
+          style={{ animation: 'cta-right 22s linear infinite', width: 'max-content' }}
+          onMouseEnter={(e) => (e.currentTarget.style.animationPlayState = 'paused')}
+          onMouseLeave={(e) => (e.currentTarget.style.animationPlayState = 'running')}
+        >
+          {[...Array(4)].map((_, i) => (
+            <span key={i} className="inline-flex items-center">
+              <span
+                className="font-heading text-[9vw] leading-none tracking-widest uppercase px-8 cursor-default transition-colors duration-300 hover:text-brand-orange"
+                style={{ color: 'rgba(255,255,255,0.05)' }}
+              >
+                CRICKET STORE
+              </span>
+              <span className="font-heading text-[9vw] leading-none px-6 text-brand-orange/8 hover:text-brand-orange transition-colors duration-300 cursor-default">·</span>
+              <span
+                className="font-heading text-[9vw] leading-none tracking-widest uppercase px-8 cursor-default transition-colors duration-300 hover:text-white"
+                style={{ color: 'rgba(255,255,255,0.05)' }}
+              >
+                INDIA'S #1
+              </span>
+              <span className="font-heading text-[9vw] leading-none px-6 text-brand-orange/8 hover:text-brand-orange transition-colors duration-300 cursor-default">·</span>
+            </span>
+          ))}
+        </div>
       </div>
 
       {/* Rotating circular badge */}
@@ -125,6 +171,17 @@ export default function CTABanner() {
           </Link>
         </motion.div>
       </div>
+
+      <style>{`
+        @keyframes cta-left {
+          0%   { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        @keyframes cta-right {
+          0%   { transform: translateX(-25%); }
+          100% { transform: translateX(0%); }
+        }
+      `}</style>
     </section>
   )
 }

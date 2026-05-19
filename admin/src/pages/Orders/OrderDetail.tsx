@@ -7,6 +7,7 @@ import { api } from '@/lib/axios'
 import { queryClient } from '@/lib/queryClient'
 import { formatDate, formatPrice } from '@/lib/utils'
 import type { Order, ApiResponse, OrderStatus } from '@/types'
+import { Dropdown } from '@/components/ui/Dropdown'
 
 const ORDER_STATUSES: OrderStatus[] = ['pending', 'confirmed', 'processing', 'shipped', 'out_for_delivery', 'delivered', 'cancelled', 'returned', 'refunded']
 
@@ -98,15 +99,14 @@ export default function OrderDetailPage() {
 
           <div className="glass-card p-5 space-y-3">
             <h3 className="font-heading text-lg text-gray-800 tracking-wider">UPDATE STATUS</h3>
-            <select
+            <Dropdown
               value={status}
-              onChange={(e) => setStatus(e.target.value as OrderStatus)}
-              className="input-admin capitalize"
-            >
-              {ORDER_STATUSES.map((s) => (
-                <option key={s} value={s} className="bg-white capitalize">{s.replace('_', ' ')}</option>
-              ))}
-            </select>
+              onChange={(v) => setStatus(v as OrderStatus)}
+              options={ORDER_STATUSES.map((s) => ({
+                value: s,
+                label: s.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()),
+              }))}
+            />
             <button
               onClick={() => updateStatus.mutate(status)}
               disabled={updateStatus.isPending || status === order.status}

@@ -66,13 +66,13 @@ export default function ProductCard({ product, className }: ProductCardProps) {
       <Link to={`/product/${product.slug}`} className="block">
         <div className="bg-white border border-gray-100 rounded-2xl overflow-hidden hover:shadow-card-hover hover:border-gray-200 transition-all duration-300">
           {/* Image */}
-          <div className="relative aspect-square overflow-hidden bg-gray-50">
+          <div className="relative h-[200px] overflow-hidden bg-gray-50">
             {!imgLoaded && <div className="absolute inset-0 shimmer-bg" />}
             <img
               src={product.thumbnail}
               alt={product.name}
               className={cn(
-                'w-full h-full object-cover transition-all duration-500 group-hover:scale-105',
+                'absolute inset-0 w-full h-full object-cover transition-all duration-500 group-hover:scale-105',
                 imgLoaded ? 'opacity-100' : 'opacity-0',
               )}
               onLoad={() => setImgLoaded(true)}

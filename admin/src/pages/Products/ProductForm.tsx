@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { useForm } from 'react-hook-form'
+import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useQuery, useMutation } from '@tanstack/react-query'
@@ -8,6 +8,7 @@ import { ArrowLeft, Loader2, Plus, Trash2 } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { toast } from 'sonner'
 import { api } from '@/lib/axios'
+import { Dropdown } from '@/components/ui/Dropdown'
 
 const productSchema = z.object({
   name: z.string().min(3),
@@ -51,7 +52,7 @@ export default function ProductFormPage() {
     enabled: isEdit,
   })
 
-  const { register, handleSubmit, formState: { errors } } = useForm<ProductForm>({
+  const { register, control, handleSubmit, formState: { errors } } = useForm<ProductForm>({
     resolver: zodResolver(productSchema),
     defaultValues: productData,
   })
@@ -118,21 +119,35 @@ export default function ProductFormPage() {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className={LABEL_CLASS}>Category</label>
-              <select {...register('category')} className={FIELD_CLASS}>
-                <option value="">Select Category</option>
-                {(categoriesData || []).map((c: { _id: string; name: string }) => (
-                  <option key={c._id} value={c._id}>{c.name}</option>
-                ))}
-              </select>
+              <Controller
+                name="category"
+                control={control}
+                render={({ field }) => (
+                  <Dropdown
+                    value={field.value}
+                    onChange={field.onChange}
+                    placeholder="Select Category"
+                    options={(categoriesData || []).map((c: { _id: string; name: string }) => ({ value: c._id, label: c.name }))}
+                  />
+                )}
+              />
+              {errors.category && <p className="text-red-400 text-xs mt-1">{errors.category.message}</p>}
             </div>
             <div>
               <label className={LABEL_CLASS}>Brand</label>
-              <select {...register('brand')} className={FIELD_CLASS}>
-                <option value="">Select Brand</option>
-                {(brandsData || []).map((b: { _id: string; name: string }) => (
-                  <option key={b._id} value={b._id}>{b.name}</option>
-                ))}
-              </select>
+              <Controller
+                name="brand"
+                control={control}
+                render={({ field }) => (
+                  <Dropdown
+                    value={field.value}
+                    onChange={field.onChange}
+                    placeholder="Select Brand"
+                    options={(brandsData || []).map((b: { _id: string; name: string }) => ({ value: b._id, label: b.name }))}
+                  />
+                )}
+              />
+              {errors.brand && <p className="text-red-400 text-xs mt-1">{errors.brand.message}</p>}
             </div>
           </div>
         </div>
@@ -158,9 +173,17 @@ export default function ProductFormPage() {
             </div>
             <div>
               <label className={LABEL_CLASS}>GST Rate (%)</label>
-              <select {...register('gstRate', { valueAsNumber: true })} className={FIELD_CLASS}>
-                {GST_RATES.map((rate) => <option key={rate} value={rate}>{rate}%</option>)}
-              </select>
+              <Controller
+                name="gstRate"
+                control={control}
+                render={({ field }) => (
+                  <Dropdown
+                    value={String(field.value ?? '')}
+                    onChange={(v) => field.onChange(Number(v))}
+                    options={GST_RATES.map((rate) => ({ value: String(rate), label: `${rate}%` }))}
+                  />
+                )}
+              />
             </div>
             <div>
               <label className={LABEL_CLASS}>HSN Code</label>

@@ -21,6 +21,5 @@ const brandSchema = new Schema<IBrand>(
   { timestamps: true },
 )
 
-brandSchema.index({ slug: 1 })
 
 export default mongoose.model<IBrand>('Brand', brandSchema)

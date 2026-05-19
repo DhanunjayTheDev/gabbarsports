@@ -28,7 +28,7 @@ export default function SearchPage() {
             <h1 className="font-heading text-4xl text-gray-900 tracking-wider">SEARCH RESULTS</h1>
           </div>
           <p className="text-gray-400 font-accent">
-            {query ? `"${query}" — ${products.length} results` : 'Enter a search term'}
+            {query ? `"${query}" ${products.length} results` : 'Enter a search term'}
           </p>
         </div>
 

@@ -73,7 +73,7 @@ function CategoryCard({ label, sub, href, Icon, color, bg, border }: typeof CATE
           </motion.div>
         </div>
 
-        {/* Text block — directly below icon, no gap */}
+        {/* Text block directly below icon, no gap */}
         <div className="flex flex-col gap-0.5" style={{ transform: 'translateZ(16px)' }}>
           <p className="font-heading text-xl text-gray-900 tracking-wide leading-none">{label}</p>
           <p className="text-gray-400 text-[11px] font-accent">{sub}</p>
@@ -159,7 +159,7 @@ export default function HeroSection() {
             </div>
 
             <p className="text-gray-500 text-lg font-body leading-relaxed max-w-md">
-              India's premier cricket store. Premium bats, pads, helmets &amp; complete cricket gear — trusted by 50,000+ athletes.
+              India's premier cricket store. Premium bats, pads, helmets &amp; complete cricket gear trusted by 50,000+ athletes.
             </p>
 
             <div className="flex flex-wrap gap-4">
@@ -279,7 +279,7 @@ export default function HeroSection() {
           </div>
         </div>
 
-        {/* Category quick links — 3D tilt cards */}
+        {/* Category quick links 3D tilt cards */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}

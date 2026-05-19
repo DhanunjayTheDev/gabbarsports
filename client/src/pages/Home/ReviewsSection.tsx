@@ -28,7 +28,7 @@ const REVIEWS_ROW1 = [
     role: 'Club Cricket Player',
     avatar: 'DP',
     rating: 5,
-    text: 'Kookaburra batting pads and gloves — everything arrived in perfect condition. Gabbar Sports is now my go-to for all cricket equipment.',
+    text: 'Kookaburra batting pads and gloves everything arrived in perfect condition. Gabbar Sports is now my go-to for all cricket equipment.',
   },
   {
     name: 'Ravi Chandran',
@@ -87,7 +87,7 @@ const REVIEWS_ROW2 = [
     role: 'Cricket Umpire',
     avatar: 'SB',
     rating: 5,
-    text: 'Gray-Nicolls cricket gear for my son. The quality blew us away. Gabbar Sports is the Amazon of sports — fast, genuine, affordable.',
+    text: 'Gray-Nicolls cricket gear for my son. The quality blew us away. Gabbar Sports is the Amazon of sports fast, genuine, affordable.',
   },
 ]
 
@@ -175,12 +175,12 @@ export default function ReviewsSection() {
         </motion.p>
       </div>
 
-      {/* Row 1 — scrolls left */}
+      {/* Row 1 scrolls left */}
       <div className="mb-4">
         <MarqueeRow reviews={REVIEWS_ROW1} reverse={false} />
       </div>
 
-      {/* Row 2 — scrolls right (opposite) */}
+      {/* Row 2 scrolls right (opposite) */}
       <MarqueeRow reviews={REVIEWS_ROW2} reverse={true} />
 
       <style>{`

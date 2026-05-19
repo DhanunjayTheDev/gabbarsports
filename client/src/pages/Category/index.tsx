@@ -2,12 +2,13 @@ import { useState, useCallback } from 'react'
 import { useParams, useSearchParams } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useInfiniteQuery } from '@tanstack/react-query'
-import { SlidersHorizontal, ChevronDown, X } from 'lucide-react'
+import { SlidersHorizontal, X } from 'lucide-react'
 import { api } from '@/lib/axios'
 import ProductCard from '@/components/ui/ProductCard'
 import { SkeletonProductGrid } from '@/components/ui/SkeletonCard'
 import type { ApiResponse, Product, FilterOptions } from '@/types'
 import { useUIStore } from '@/stores/uiStore'
+import { Dropdown } from '@/components/ui/Dropdown'
 
 const SORT_OPTIONS = [
   { value: 'newest', label: 'Newest First' },
@@ -94,20 +95,11 @@ export default function CategoryPage() {
 
           <div className="flex items-center gap-3">
             <span className="text-gray-400 text-sm font-accent">Sort:</span>
-            <div className="relative">
-              <select
-                value={filters.sort}
-                onChange={(e) => updateFilter('sort', e.target.value as FilterOptions['sort'])}
-                className="appearance-none px-4 py-2.5 pr-8 bg-white border border-gray-200 rounded-xl text-gray-700 text-sm font-accent focus:outline-none focus:border-brand-orange/40 transition-all duration-200 cursor-pointer"
-              >
-                {SORT_OPTIONS.map((opt) => (
-                  <option key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </option>
-                ))}
-              </select>
-              <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
-            </div>
+            <Dropdown
+              value={filters.sort}
+              onChange={(v) => updateFilter('sort', v as FilterOptions['sort'])}
+              options={SORT_OPTIONS}
+            />
           </div>
         </div>
 
@@ -200,7 +192,22 @@ export default function CategoryPage() {
           {/* Products */}
           <div className="flex-1 min-w-0">
             {isLoading ? (
-              <SkeletonProductGrid count={12} />
+              <div className={`grid gap-4 md:gap-5 ${isFilterOpen ? 'grid-cols-2 lg:grid-cols-3' : 'grid-cols-2 md:grid-cols-3 xl:grid-cols-4'}`}>
+                {Array.from({ length: 12 }).map((_, i) => (
+                  <div key={i} className="bg-white border border-gray-100 rounded-2xl overflow-hidden animate-pulse">
+                    <div className="h-[200px] bg-gray-100" />
+                    <div className="p-4 space-y-3">
+                      <div className="h-3 bg-gray-100 rounded w-1/3" />
+                      <div className="h-4 bg-gray-100 rounded w-4/5" />
+                      <div className="h-4 bg-gray-100 rounded w-2/3" />
+                      <div className="flex items-center justify-between mt-2">
+                        <div className="h-6 bg-gray-100 rounded w-1/3" />
+                        <div className="h-8 bg-gray-100 rounded-lg w-16" />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             ) : allProducts.length === 0 ? (
               <div className="text-center py-24">
                 <p className="font-heading text-4xl text-gray-200 tracking-wider">NO PRODUCTS</p>
@@ -208,7 +215,7 @@ export default function CategoryPage() {
               </div>
             ) : (
               <>
-                <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-5">
+                <div className={`grid gap-4 md:gap-5 ${isFilterOpen ? 'grid-cols-2 lg:grid-cols-3' : 'grid-cols-2 md:grid-cols-3 xl:grid-cols-4'}`}>
                   {allProducts.map((product) => (
                     <ProductCard key={product._id} product={product} />
                   ))}

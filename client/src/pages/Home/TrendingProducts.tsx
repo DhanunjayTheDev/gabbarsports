@@ -14,6 +14,10 @@ export default function TrendingProducts() {
       api.get<ApiResponse<Product[]>>('/products?isTrending=true&limit=8').then((r) => r.data),
   })
 
+  const products = data?.data ?? []
+
+  if (!isLoading && products.length === 0) return null
+
   return (
     <section className="py-20 md:py-28 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -57,7 +61,7 @@ export default function TrendingProducts() {
             viewport={{ once: true }}
             className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6"
           >
-            {data?.data.map((product) => (
+            {products.map((product) => (
               <ProductCard key={product._id} product={product} />
             ))}
           </motion.div>

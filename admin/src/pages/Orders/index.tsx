@@ -6,6 +6,7 @@ import { Search, Eye, ShoppingCart } from 'lucide-react'
 import { api } from '@/lib/axios'
 import { formatDate, formatPrice } from '@/lib/utils'
 import type { Order, ApiResponse } from '@/types'
+import { Dropdown } from '@/components/ui/Dropdown'
 
 const STATUS_COLORS: Record<string, string> = {
   pending: 'bg-yellow-400/10 text-yellow-400',
@@ -46,16 +47,18 @@ export default function OrdersPage() {
             className="input-admin pl-9 w-64"
           />
         </div>
-        <select
+        <Dropdown
           value={statusFilter}
-          onChange={(e) => { setStatusFilter(e.target.value); setPage(1) }}
-          className="input-admin w-44"
-        >
-          <option value="">All Statuses</option>
-          {Object.keys(STATUS_COLORS).map((s) => (
-            <option key={s} value={s} className="bg-white capitalize">{s.replace('_', ' ')}</option>
-          ))}
-        </select>
+          onChange={(v) => { setStatusFilter(v); setPage(1) }}
+          placeholder="All Statuses"
+          className="w-44"
+          options={[
+            ...Object.keys(STATUS_COLORS).map((s) => ({
+              value: s,
+              label: s.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()),
+            })),
+          ]}
+        />
       </div>
 
       <div className="glass-card overflow-hidden">

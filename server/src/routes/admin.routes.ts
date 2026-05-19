@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import {
+  adminLogin,
   getDashboardStats,
   adminGetProducts,
   adminCreateProduct,
@@ -28,6 +29,9 @@ import { authenticate } from '../middleware/auth'
 import { isAdmin, isSuperAdmin, isInventoryStaff } from '../middleware/role'
 
 const router = Router()
+
+// Public admin auth must be before authenticate wall
+router.post('/auth/login', adminLogin)
 
 router.use(authenticate, isAdmin)
 

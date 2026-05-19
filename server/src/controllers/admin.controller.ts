@@ -13,6 +13,44 @@ import { generateUniqueSlug } from '../utils/slugify'
 import { uploadImage, deleteImage } from '../config/cloudinary'
 import { invalidateCache } from '../config/redis'
 import { emitToUser } from '../config/socket'
+import { signAccessToken, signRefreshToken } from '../utils/jwt'
+
+const ADMIN_ROLES = ['super_admin', 'manager', 'inventory', 'support'] as const
+
+export async function adminLogin(req: Request, res: Response, next: NextFunction): Promise<void> {
+  try {
+    const { email, password } = req.body
+    if (!email || !password) throw new AppError('Email and password required', 400)
+
+    const user = await User.findOne({ email }).select('+password +refreshTokens')
+    if (!user || !user.password) throw new AppError('Invalid credentials', 401)
+    if (!user.isActive) throw new AppError('Account deactivated', 403)
+    if (!(ADMIN_ROLES as readonly string[]).includes(user.role)) {
+      throw new AppError('Access denied: not an admin account', 403)
+    }
+
+    const isMatch = await user.comparePassword(password)
+    if (!isMatch) throw new AppError('Invalid credentials', 401)
+
+    const accessToken = signAccessToken({ userId: user._id.toString(), role: user.role })
+    const refreshToken = signRefreshToken({ userId: user._id.toString(), role: user.role })
+
+    if (user.refreshTokens.length >= 5) user.refreshTokens.shift()
+    user.refreshTokens.push(refreshToken)
+    user.lastLogin = new Date()
+    await user.save({ validateBeforeSave: false })
+
+    sendSuccess(res, {
+      message: 'Login successful',
+      data: {
+        user: { _id: user._id, name: user.name, email: user.email, role: user.role, avatar: user.avatar },
+        accessToken,
+      },
+    })
+  } catch (err) {
+    next(err)
+  }
+}
 
 // ── Dashboard ────────────────────────────────────────────────────────────────
 

@@ -13,6 +13,5 @@ const wishlistSchema = new Schema<IWishlist>(
   { timestamps: true },
 )
 
-wishlistSchema.index({ user: 1 })
 
 export default mongoose.model<IWishlist>('Wishlist', wishlistSchema)

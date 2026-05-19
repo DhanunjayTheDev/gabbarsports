@@ -2,19 +2,15 @@
   "name": "gabbarsports",
   "version": "1.0.0",
   "private": true,
-  "workspaces": [
-    "client",
-    "admin",
-    "server"
-  ],
   "scripts": {
     "dev": "concurrently \"npm run dev:client\" \"npm run dev:admin\" \"npm run dev:server\"",
-    "dev:client": "npm run dev --workspace=client",
-    "dev:admin": "npm run dev --workspace=admin",
-    "dev:server": "npm run dev --workspace=server",
-    "build": "npm run build --workspace=client && npm run build --workspace=admin && npm run build --workspace=server",
-    "lint": "npm run lint --workspaces",
-    "typecheck": "npm run typecheck --workspaces"
+    "dev:client": "npm run dev --prefix client",
+    "dev:admin": "npm run dev --prefix admin",
+    "dev:server": "npm run dev --prefix server",
+    "build": "npm run build --prefix client && npm run build --prefix admin && npm run build --prefix server",
+    "lint": "npm run lint --prefix client && npm run lint --prefix admin",
+    "typecheck": "npm run typecheck --prefix client && npm run typecheck --prefix admin && npm run typecheck --prefix server",
+    "install:all": "npm install --prefix client && npm install --prefix admin && npm install --prefix server"
   },
   "devDependencies": {
     "concurrently": "^8.2.2"

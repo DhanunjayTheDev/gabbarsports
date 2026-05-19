@@ -48,9 +48,9 @@ export default function BrandsSection() {
       </div>
 
       <div className="space-y-3">
-        {/* Row 1 — scrolls left */}
+        {/* Row 1 scrolls left */}
         <BrandMarquee brands={BRANDS_ROW1} reverse={false} />
-        {/* Row 2 — scrolls right */}
+        {/* Row 2 scrolls right */}
         <BrandMarquee brands={BRANDS_ROW2} reverse={true} />
       </div>
 

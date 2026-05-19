@@ -7,7 +7,7 @@ interface SkeletonCardProps {
 export function SkeletonCard({ className }: SkeletonCardProps) {
   return (
     <div className={cn('bg-white border border-gray-100 rounded-2xl overflow-hidden animate-pulse', className)}>
-      <div className="aspect-square bg-gray-100" />
+      <div className="h-[200px] bg-gray-100" />
       <div className="p-4 space-y-3">
         <div className="h-3 bg-gray-100 rounded w-1/3" />
         <div className="h-4 bg-gray-100 rounded w-4/5" />

@@ -1,5 +1,8 @@
 import { Request, Response, NextFunction } from 'express'
+import mongoose from 'mongoose'
 import Product from '../models/Product'
+import Category from '../models/Category'
+import Brand from '../models/Brand'
 import { sendSuccess, AppError } from '../utils/response'
 import { getPagination, buildMeta } from '../utils/pagination'
 import { cache, invalidateCache } from '../config/redis'
@@ -15,11 +18,36 @@ export async function getProducts(req: Request, res: Response, next: NextFunctio
 
     const filter: Record<string, unknown> = { isActive: true, deletedAt: null }
 
-    if (category) filter.category = category
-    if (brand) filter.brand = brand
+    if (category) {
+      const isObjectId = mongoose.isValidObjectId(category)
+      let categoryId: unknown
+      if (isObjectId) {
+        categoryId = category
+      } else {
+        const cat = await Category.findOne({ slug: category, isActive: true }).select('_id').lean()
+        if (!cat) { sendSuccess(res, { data: [], meta: buildMeta(0, page, limit) }); return }
+        categoryId = cat._id
+      }
+      // Include subcategories so parent nav links show all child products
+      const children = await Category.find({ parent: categoryId as mongoose.Types.ObjectId, isActive: true }).select('_id').lean()
+      const categoryIds = [categoryId, ...children.map((c) => c._id)]
+      filter.category = { $in: categoryIds }
+    }
+
+    if (brand) {
+      const isObjectId = mongoose.isValidObjectId(brand)
+      if (isObjectId) {
+        filter.brand = brand
+      } else {
+        const br = await Brand.findOne({ slug: brand, isActive: true }).select('_id').lean()
+        if (br) filter.brand = br._id
+        else { sendSuccess(res, { data: [], meta: buildMeta(0, page, limit) }); return }
+      }
+    }
+
     if (isTrending === 'true') filter.isTrending = true
     if (isFeatured === 'true') filter.isFeatured = true
-    if (isNew === 'true') filter.isNew = true
+    if (isNew === 'true') filter.isNewArrival = true
     if (inStock === 'true') filter.inStock = true
 
     if (priceMin || priceMax) {

@@ -1,14 +1,15 @@
-import { useState } from 'react'
+import { useState, useRef, useLayoutEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { Loader2, MapPin, CreditCard, CheckCircle2 } from 'lucide-react'
+import { MapPin, CreditCard, CheckCircle2 } from 'lucide-react'
 import { toast } from 'sonner'
 import { api } from '@/lib/axios'
 import { useCartStore } from '@/stores/cartStore'
 import { formatPrice } from '@/lib/utils'
+import { SlideToConfirm } from '@/components/ui/SlideToConfirm'
 
 const addressSchema = z.object({
   fullName: z.string().min(2),
@@ -57,11 +58,18 @@ const labelClass = 'block text-xs font-accent text-gray-500 mb-1.5 uppercase tra
 
 export default function CheckoutPage() {
   const [step, setStep] = useState(0)
-  const [isLoading, setIsLoading] = useState(false)
+  const [sliderWidth, setSliderWidth] = useState(380)
+  const sliderContainerRef = useRef<HTMLDivElement>(null)
   const { items, subtotal, couponCode, couponDiscount, total, clearCart } = useCartStore()
   const navigate = useNavigate()
 
   const shippingCharge = subtotal() >= 999 ? 0 : 99
+
+  useLayoutEffect(() => {
+    if (step === 2 && sliderContainerRef.current) {
+      setSliderWidth(sliderContainerRef.current.offsetWidth)
+    }
+  }, [step])
 
   const { register, handleSubmit, getValues, formState: { errors } } = useForm<AddressForm>({
     resolver: zodResolver(addressSchema),
@@ -72,7 +80,6 @@ export default function CheckoutPage() {
   }
 
   async function createOrder() {
-    setIsLoading(true)
     try {
       const address = getValues()
       const { data } = await api.post('/orders', {
@@ -106,8 +113,7 @@ export default function CheckoutPage() {
       rzp.open()
     } catch {
       toast.error('Failed to create order. Please try again.')
-    } finally {
-      setIsLoading(false)
+      throw new Error('Order failed')
     }
   }
 
@@ -238,21 +244,37 @@ export default function CheckoutPage() {
                   <h2 className="font-heading text-2xl text-gray-900 tracking-wider mb-6 flex items-center gap-2">
                     <CreditCard className="w-5 h-5 text-brand-orange" /> PAYMENT
                   </h2>
+
                   <div className="p-6 bg-gray-50 border border-gray-100 rounded-xl text-center mb-6">
                     <p className="text-gray-400 font-accent text-sm mb-2">Powered by</p>
                     <span className="font-heading text-2xl text-brand-orange tracking-wider">RAZORPAY</span>
                     <p className="text-gray-400 text-xs font-accent mt-2">UPI, Cards, Net Banking & Wallets</p>
                   </div>
-                  <div className="flex gap-3">
-                    <button onClick={() => setStep(1)} className="flex-1 btn-ghost py-3">Back</button>
-                    <button
-                      onClick={createOrder}
-                      disabled={isLoading}
-                      className="flex-1 btn-primary py-3 flex items-center justify-center gap-2"
-                    >
-                      {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : `Pay ${formatPrice(total() + shippingCharge)}`}
-                    </button>
+
+                  <div className="p-4 bg-gray-50 border border-gray-100 rounded-xl mb-6">
+                    <div className="flex justify-between items-center text-sm font-accent text-gray-500 mb-1">
+                      <span>Amount to pay</span>
+                      <span className="font-heading text-xl text-gray-900">{formatPrice(total() + shippingCharge)}</span>
+                    </div>
+                    <p className="text-xs text-gray-400 font-accent">Slide to authorize payment and place order</p>
                   </div>
+
+                  <div ref={sliderContainerRef} className="flex flex-col items-center gap-4">
+                    <SlideToConfirm
+                      text={`Slide to pay ${formatPrice(total() + shippingCharge)}`}
+                      successText="Payment initiated!"
+                      onConfirm={createOrder}
+                      width={sliderWidth}
+                      height={56}
+                    />
+                  </div>
+
+                  <button
+                    onClick={() => setStep(1)}
+                    className="w-full btn-ghost py-3 mt-4 text-sm"
+                  >
+                    ← Back to Review
+                  </button>
                 </div>
               </motion.div>
             )}
